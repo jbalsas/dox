@@ -17,10 +17,12 @@ exports.version = '0.0.1';
  *     // => "wahoo"
  *
  * @param {String|Buffer} str to parse
+ *  second line
+ * @param {!Object<string function(Editor)>} special text
  * @return {String}
  * @api public
  */
 
-exports.parse = function(str) {
+exports.parse = function(str, special) {
   return "wahoo";
 }

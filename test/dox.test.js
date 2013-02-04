@@ -10,7 +10,6 @@ var dox = require('../')
 function fixture(name, fn) {
   fs.readFile(__dirname + '/fixtures/' + name, 'utf8', fn);
 }
-
 module.exports = {
   'test .parseComments() blocks': function(done){
     fixture('a.js', function(err, str){
@@ -51,15 +50,21 @@ module.exports = {
 
       var parse = comments.shift();
       parse.description.summary.should.equal('<p>Parse the given <code>str</code>.</p>');
-      parse.description.body.should.equal('<h2>Examples</h2>\n\n<pre><code>parse(str)\n// =&amp;gt; "wahoo"\n</code></pre>');
-      parse.description.full.should.equal('<p>Parse the given <code>str</code>.</p>\n\n<h2>Examples</h2>\n\n<pre><code>parse(str)\n// =&amp;gt; "wahoo"\n</code></pre>');
+      parse.description.body.should.equal('<h2>Examples</h2>\n\n<pre><code>parse(str)\n// =&gt; "wahoo"\n</code></pre>');
+      parse.description.full.should.equal('<p>Parse the given <code>str</code>.</p>\n\n<h2>Examples</h2>\n\n<pre><code>parse(str)\n// =&gt; "wahoo"\n</code></pre>');
       parse.tags[0].type.should.equal('param');
       parse.tags[0].name.should.equal('str');
-      parse.tags[0].description.should.equal('to parse');
+      parse.tags[0].description.should.equal('to parse second line');
       parse.tags[0].types.should.eql(['String', 'Buffer']);
-      parse.tags[1].type.should.equal('return');
-      parse.tags[1].types.should.eql(['String']);
-      parse.tags[2].visibility.should.equal('public');
+
+      parse.tags[1].type.should.equal('param');
+      parse.tags[1].name.should.equal('special');
+      parse.tags[1].description.should.equal('text');
+      parse.tags[1].types.should.eql(['!Object<string function(Editor)>']);
+
+      parse.tags[2].type.should.equal('return');
+      parse.tags[2].types.should.eql(['String']);
+      parse.tags[3].visibility.should.equal('public');
       done();
     });
   },
@@ -191,7 +196,7 @@ module.exports = {
         , parse = comments.shift();
 
       version.code.should.equal("exports.version = '0.0.1';");
-      parse.code.should.equal('exports.parse = function(str) {\n  return "wahoo";\n}');
+      parse.code.should.equal('exports.parse = function(str, special) {\n  return "wahoo";\n}');
       done();
     });
   },
